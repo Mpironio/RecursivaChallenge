@@ -1,0 +1,12 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <form asp-action="Data" asp-controller="Home" method="post" enctype="multipart/form-data">
+        <div>
+            <input accept=".csv" type="file" name="File"/>
+            <button type="submit">Enviar</button>
+        </div>
+    </form>
+</div>
