@@ -9,7 +9,8 @@ namespace Recursiva.Services
         float GetPromedioPorEquipo(string equipo);
         IEnumerable<Socio> GetCasadosUniversitarios(int take);
         IEnumerable<string> GetNombresComunesPorEquipo(string equipo, int take);
-        IEnumerable<int> GetPromedioEdades();
+        IEnumerable<InfoEdades> GetPromedioEdades();
+
 
     }
 }

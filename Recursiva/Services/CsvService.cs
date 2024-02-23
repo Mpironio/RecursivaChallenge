@@ -58,12 +58,51 @@ namespace Recursiva.Services
             return names.Take(take).ToList();
         }
 
-        public IEnumerable<int> GetPromedioEdades()
+        public IEnumerable<InfoEdades> GetPromedioEdades()
         {
-            var promedio = _socios
-                .GroupBy(s => s.Equipo)
-                .Select(g => (int)g.Average(s => s.Edad));
-            return promedio.ToList();
+            var equipos = GetEquipos();
+            var result = new List<InfoEdades>();
+
+            foreach (var equipo in equipos)
+            {
+                var promedio = GetPromedioPorEquipo(equipo);
+
+                var max = GetSociosPorEquipo(equipo)
+                    .Max(s => s.Edad);
+
+                var min = GetSociosPorEquipo(equipo)
+                    .Min(s => s.Edad);
+
+                result.Add(new InfoEdades
+                {
+                    Equipo = equipo,
+                    PromedioEdad = promedio,
+                    MaxEdad = max,
+                    MinEdad = min
+                });
+            }
+
+            result = result
+                .OrderBy(x => GetSociosPorEquipo(x.Equipo).Count())
+                .ToList();
+
+            return result;
+        }
+
+
+        private IEnumerable<string> GetEquipos()
+        {
+            var equipos = _socios
+                .Select(s => s.Equipo)
+                .Distinct();
+            return equipos.ToList();
+        }
+
+        private IEnumerable<Socio> GetSociosPorEquipo(string equipo)
+        {
+            var socios = _socios
+                .Where(s => s.Equipo == equipo);
+            return socios;
         }
     }
 }
