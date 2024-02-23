@@ -2,11 +2,34 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
+<div class="d-flex justify-content-center">
     <form asp-action="Data" asp-controller="Home" method="post" enctype="multipart/form-data">
-        <div>
-            <input accept=".csv" type="file" name="File"/>
-            <button type="submit">Enviar</button>
+
+        <div class="card" style="width: 18rem;">
+            <div class="card-body text-center">
+                
+                <div class="card card-body">
+                    <label for="pdfInput" class="custom-file-upload">
+                        <div id="drop-area">
+                            <p id="pArchivo">Haz clic para seleccionar un archivo</p>
+                            <input id="pdfInput" class="d-none" onchange="updateDisplay()" accept=".csv" type="file" name="File"/>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-plus-circle-fill col-auto" viewBox="0 0 16 16">
+                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z" />
+                            </svg>
+                        </div>
+                    </label>
+                </div>
+                <button class="btn btn-primary mt-3" type="submit">Enviar</button>
+            </div>
         </div>
     </form>
 </div>
+
+<script>
+    function updateDisplay() {
+        var p = document.getElementById('pArchivo');
+
+        p.innerHTML = "Archivo seleccionado: " + document.getElementById('pdfInput').files[0].name + ""
+        return;
+    }
+</script>
