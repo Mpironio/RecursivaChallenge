@@ -28,8 +28,14 @@
 <script>
     function updateDisplay() {
         var p = document.getElementById('pArchivo');
-
+        var docType = document.getElementById('pdfInput').files[0].type;
         p.innerHTML = "Archivo seleccionado: " + document.getElementById('pdfInput').files[0].name + ""
+
+        if (docType != "text/csv") {
+            alert("El archivo seleccionado debe ser un archivo CSV");
+            document.getElementById('pdfInput').value = "";
+            p.innerHTML = "Haz clic para seleccionar un archivo";
+        }
         return;
     }
 </script>

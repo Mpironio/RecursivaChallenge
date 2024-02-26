@@ -1,9 +1,79 @@
-﻿@Model Recursiva.Models.ResultViewModel
+﻿@model Recursiva.ViewModels.ResultsViewModel
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "CSV Data";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container text-center">
+    <div class="row">
+        @* Cant. personas registradas *@
+        <div class="col">Total de registrados: @Model.TotalRegistrados</div>
+        @* Promedio de edad *@
+        <div class="col">Edad promedio de Racing: @Model.PromedioEdad</div>
+    </div>
+    @* Casados Universitarios *@
+    <div class="row">
+        <div class="col">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Equipo</th>
+                        <th>Edad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var persona in Model.CasadosUniversitarios)
+                    {
+                        <tr>
+                            <td>@persona.Nombre</td>
+                            <td>@persona.Equipo</td>
+                            <td>@persona.Edad</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        @* Info edades *@
+        <div class="col">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Equipo</th>
+                        <th>Promedio de edad</th>
+                        <th>Edad máxima</th>
+                        <th>Edad mínima</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var value in Model.PromedioEdades)
+                    {
+                        <tr>
+                            <td>@value.Equipo</td>
+                            <td>@value.PromedioEdad</td>
+                            <td>@value.MaxEdad</td>
+                            <td>@value.MinEdad</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        @* Nombres más comunes *@
+        <div class="col">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var nombre in Model.NombresMasComunes)
+                    {
+                        <tr>
+                            <td>@nombre</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
