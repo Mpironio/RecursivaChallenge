@@ -2,30 +2,29 @@
 @{
     ViewData["Title"] = "CSV Data";
 }
-
-<div class="container text-center">
+<div class="container">
     <div class="row">
         @* Cant. personas registradas *@
         <div class="col">Total de registrados: @Model.TotalRegistrados</div>
         @* Promedio de edad *@
-        <div class="col">Edad promedio de Racing: @Model.PromedioEdad</div>
+        <div class="col" style="text-align:end">Edad promedio de Racing: @Model.PromedioEdad</div>
     </div>
     @* Casados Universitarios *@
-    <div class="row">
-        <div class="col">
-            <table>
+    <div class="row h-100">
+        <div class="col overflow-auto" style="height:540px">
+            <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>Nombre</th>
-                        <th>Equipo</th>
-                        <th>Edad</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Equipo</th>
+                        <th scope="col">Edad</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var persona in Model.CasadosUniversitarios)
                     {
                         <tr>
-                            <td>@persona.Nombre</td>
+                            <td scope="row">@persona.Nombre</td>
                             <td>@persona.Equipo</td>
                             <td>@persona.Edad</td>
                         </tr>
@@ -35,20 +34,20 @@
         </div>
         @* Info edades *@
         <div class="col">
-            <table>
+            <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>Equipo</th>
-                        <th>Promedio de edad</th>
-                        <th>Edad máxima</th>
-                        <th>Edad mínima</th>
+                        <th scope="col">Equipo</th>
+                        <th scope="col">Promedio de edad</th>
+                        <th scope="col">Edad máxima</th>
+                        <th scope="col">Edad mínima</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var value in Model.PromedioEdades)
                     {
                         <tr>
-                            <td>@value.Equipo</td>
+                            <td scope="row">@value.Equipo</td>
                             <td>@value.PromedioEdad</td>
                             <td>@value.MaxEdad</td>
                             <td>@value.MinEdad</td>
@@ -58,18 +57,18 @@
             </table>
         </div>
         @* Nombres más comunes *@
-        <div class="col">
-            <table>
+        <div class="col-4">
+            <table class="table">
                 <thead>
                     <tr>
-                        <th>Nombre</th>
+                        <th scope="col">Nombres comunes de River</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var nombre in Model.NombresMasComunes)
                     {
                         <tr>
-                            <td>@nombre</td>
+                            <td class="row">@nombre</td>
                         </tr>
                     }
                 </tbody>
