@@ -12,8 +12,6 @@ namespace Recursiva.Services
         IEnumerable<string> GetNombresComunesPorEquipo(string equipo, int take);
         IEnumerable<InfoEdades> GetPromedioEdades();
         IEnumerable<string> GetEquipos();
-        IEnumerable<string> GetEstudios();
-
 
     }
 }

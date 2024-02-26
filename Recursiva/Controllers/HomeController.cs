@@ -5,6 +5,7 @@ using System.Globalization;
 using CsvHelper.Configuration;
 using Recursiva.Services;
 using Recursiva.ViewModels;
+using System.Text;
 
 namespace Recursiva.Controllers
 {
@@ -25,14 +26,22 @@ namespace Recursiva.Controllers
         {
             if(file.ContentType != "text/csv" || file.Length == 0) 
             {
-                return RedirectToAction("Error");
+                return RedirectToAction("Error", new Exception("Tipo de archivo incorrecto"));
             }
 
             ResultsViewModel results = new();
 
-            using (var sr = new StreamReader(file.OpenReadStream()))
+            using (var sr = new StreamReader(file.OpenReadStream(), Encoding.Latin1, false))
             {
-                _csvService.LoadFile(sr);
+                try {                     
+                    _csvService.LoadFile(sr);
+                }
+                catch (Exception e)
+                {
+                    return RedirectToAction("Error");
+                }
+                
+
 
                 results.TotalRegistrados = _csvService.GetTotalRegistrados();
                 results.PromedioEdad = _csvService.GetPromedioEdadPorEquipo("Racing");
@@ -51,7 +60,8 @@ namespace Recursiva.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel());
+
+            return View();
         }
     }
 }

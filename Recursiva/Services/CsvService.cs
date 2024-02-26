@@ -15,7 +15,8 @@ namespace Recursiva.Services
             _config = new CsvConfiguration(CultureInfo.CurrentCulture)
             {
                 HasHeaderRecord = false,
-                Delimiter = ";"
+                Delimiter = ";",
+                DetectDelimiter = true,
             };
             _socios = new List<Socio>();
         }
@@ -24,7 +25,11 @@ namespace Recursiva.Services
             using (var csv = new CsvReader(stream, _config))
             {
                 _socios = csv.GetRecords<Socio>().ToList();
-            } 
+            }
+            if(_socios.Count() == 0)
+            {
+                throw new Exception("No se encontraron registros");
+            }
         }
         public int GetTotalRegistrados()
         {
@@ -33,14 +38,14 @@ namespace Recursiva.Services
 
         public float GetPromedioEdadPorEquipo(string equipo)
         {
-            
-            var avg = (float)_socios.Where(s => s.Equipo == equipo).Average(s => s.Edad);
-            return avg;
+
+            var avg = Math.Round(_socios.Where(s => s.Equipo == equipo).Average(s => s.Edad), 2);
+            return (float)avg;
         }
 
         public IEnumerable<CasadosUniversitarios> GetCasadosUniversitarios(int take)
         {
-            
+
             var results = _socios
                 .Where(s => s.EstadoCivil == "Casado")
                 .Where(s => s.NivelDeEstudios == "Universitario")
@@ -108,15 +113,6 @@ namespace Recursiva.Services
                 .Distinct();
             return equipos.ToList();
         }
-
-        public IEnumerable<string> GetEstudios()
-        {
-            var estudios = _socios
-                .Select(s => s.NivelDeEstudios)
-                .Distinct();
-            return estudios.ToList();
-        }
-
 
 
         private IEnumerable<Socio> GetSociosPorEquipo(string equipo)
