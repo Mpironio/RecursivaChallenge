@@ -1,4 +1,4 @@
-﻿namespace Recursiva.Models
+﻿namespace Recursiva.Entities
 {
     public class Socio
     {

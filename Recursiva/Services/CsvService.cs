@@ -1,5 +1,6 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
+using Recursiva.Entities;
 using Recursiva.Models;
 using System.Globalization;
 
@@ -16,36 +17,46 @@ namespace Recursiva.Services
                 HasHeaderRecord = false,
                 Delimiter = ";"
             };
-
+            _socios = new List<Socio>();
         }
         public void LoadFile(StreamReader stream)
         {
             using (var csv = new CsvReader(stream, _config))
             {
                 _socios = csv.GetRecords<Socio>().ToList();
-            }
-                
+            } 
         }
         public int GetTotalRegistrados()
         {
             return _socios.Count();
         }
 
-        public float GetPromedioPorEquipo(string equipo)
+        public float GetPromedioEdadPorEquipo(string equipo)
         {
             
             var avg = (float)_socios.Where(s => s.Equipo == equipo).Average(s => s.Edad);
             return avg;
         }
 
-        public IEnumerable<Socio> GetCasadosUniversitarios(int take)
+        public IEnumerable<CasadosUniversitarios> GetCasadosUniversitarios(int take)
         {
             
             var results = _socios
                 .Where(s => s.EstadoCivil == "Casado")
                 .Where(s => s.NivelDeEstudios == "Universitario")
-                .OrderByDescending(s => s.Edad);
-            return results.Take(take).ToList();
+                .OrderByDescending(s => s.Edad)
+                .Take(take);
+
+            var casadosUniversitarios = results
+                .Select(s => new CasadosUniversitarios
+                {
+                    Nombre = s.Nombre,
+                    Equipo = s.Equipo,
+                    Edad = s.Edad
+                });
+
+
+            return casadosUniversitarios.ToList();
         }
 
         public IEnumerable<string> GetNombresComunesPorEquipo(string equipo, int take)
@@ -65,7 +76,7 @@ namespace Recursiva.Services
 
             foreach (var equipo in equipos)
             {
-                var promedio = GetPromedioPorEquipo(equipo);
+                var promedio = GetPromedioEdadPorEquipo(equipo);
 
                 var max = GetSociosPorEquipo(equipo)
                     .Max(s => s.Edad);
@@ -90,13 +101,23 @@ namespace Recursiva.Services
         }
 
 
-        private IEnumerable<string> GetEquipos()
+        public IEnumerable<string> GetEquipos()
         {
             var equipos = _socios
                 .Select(s => s.Equipo)
                 .Distinct();
             return equipos.ToList();
         }
+
+        public IEnumerable<string> GetEstudios()
+        {
+            var estudios = _socios
+                .Select(s => s.NivelDeEstudios)
+                .Distinct();
+            return estudios.ToList();
+        }
+
+
 
         private IEnumerable<Socio> GetSociosPorEquipo(string equipo)
         {

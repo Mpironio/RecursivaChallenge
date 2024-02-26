@@ -1,4 +1,5 @@
-﻿using Recursiva.Models;
+﻿using Recursiva.Entities;
+using Recursiva.Models;
 
 namespace Recursiva.Services
 {
@@ -6,10 +7,12 @@ namespace Recursiva.Services
     {
         void LoadFile(StreamReader stream);
         int GetTotalRegistrados();
-        float GetPromedioPorEquipo(string equipo);
-        IEnumerable<Socio> GetCasadosUniversitarios(int take);
+        float GetPromedioEdadPorEquipo(string equipo);
+        IEnumerable<CasadosUniversitarios> GetCasadosUniversitarios(int take);
         IEnumerable<string> GetNombresComunesPorEquipo(string equipo, int take);
         IEnumerable<InfoEdades> GetPromedioEdades();
+        IEnumerable<string> GetEquipos();
+        IEnumerable<string> GetEstudios();
 
 
     }

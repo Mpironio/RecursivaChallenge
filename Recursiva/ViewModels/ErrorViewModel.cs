@@ -1,4 +1,4 @@
-namespace Recursiva.Models
+namespace Recursiva.ViewModels
 {
     public class ErrorViewModel
     {
